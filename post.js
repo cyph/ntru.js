@@ -97,8 +97,13 @@ var ntru	= {
 
 		var end;
 		for (var i = 0 ; i < result.length ; ++i) {
-			if (!end && result[i] === 0) {
-				end	= i;
+			if (result[i] === 0) {
+				if (!end) {
+					end	= i;
+				}
+			}
+			else {
+				end	= undefined;
 			}
 		}
 
