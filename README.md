@@ -12,7 +12,7 @@ To change this, modify ntru.c and rebuild with `make`.
 
 ## Example Usage
 
-	var plaintext	= [104,101,108,108,111]; // ("hello")
+	var plaintext	= new Uint8Array([104, 101, 108, 108, 111]); // ("hello")
 
 	var keyPair		= ntru.keyPair();
 	var encrypted	= ntru.encrypt(plaintext, keyPair.publicKey);
