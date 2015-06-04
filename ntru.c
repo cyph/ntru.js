@@ -1,8 +1,6 @@
 #include "ntru_crypto.h"
 #include "ntru_crypto_ntru_encrypt_param_sets.h"
 
-#define params NTRU_EES743EP1
-
 DRBG_HANDLE drbg;
 uint8_t* drbgseed;
 int drbgseedlength;
