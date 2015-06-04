@@ -18,7 +18,6 @@ function dataReturn (returnValue, result) {
 	}
 	else {
 		throw new Error('NTRU error: ' + returnValue);
-		return result;
 	}
 }
 
