@@ -16,7 +16,7 @@ To change this, modify ntru.c and rebuild with `make`.
 
 	var keyPair		= ntru.keyPair();
 	var encrypted	= ntru.encrypt(plaintext, keyPair.publicKey);
-	var decrypted	= ntru.decrypt(encrypted, keyPair.privateKey);
+	var decrypted	= ntru.decrypt(encrypted, keyPair.privateKey); // same as plaintext
 
 Note: NTRU generally shouldn't be used to directly encrypt your data; in most cases, you'll
 want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
