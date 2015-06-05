@@ -126,9 +126,9 @@ int decrypt (uint8_t* enc, int enc_len, uint8_t* priv, int priv_len, uint8_t* de
 	);
 
 	if (rc == NTRU_OK) {
-		return -dec_len;
+		return dec_len;
 	}
 	else {
-		return rc;
+		return -rc;
 	}
 }

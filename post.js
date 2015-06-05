@@ -94,14 +94,14 @@ var ntru	= {
 		dataResult(priv);
 
 		if (returnValue > 0) {
-			dataReturn(returnValue);
-		}
-		else {
 			return new Uint8Array(
 				dataResult(dec).buffer,
 				0,
-				-returnValue
+				returnValue
 			);
+		}
+		else {
+			dataReturn(-returnValue);
 		}
 	}
 };
