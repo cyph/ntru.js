@@ -1,17 +1,5 @@
 ;
 
-function dataAllocate (n) {
-	var data		= new Uint8Array(n);
-	var nDataBytes	= data.length * data.BYTES_PER_ELEMENT;
-	var dataHeap	= new Uint8Array(Module.HEAPU8.buffer, Module._malloc(nDataBytes), nDataBytes);
-	dataHeap.set(new Uint8Array(data.buffer));
-	return {data: data, dataHeap: dataHeap};
-}
-
-function dataArgument (o) {
-    return o.dataHeap.byteOffset;
-}
-
 function dataReturn (returnValue, result) {
 	if (returnValue === 0) {
 		return result;
@@ -21,87 +9,104 @@ function dataReturn (returnValue, result) {
 	}
 }
 
-function dataResult (o) {
-	var result	= new Uint8Array(o.dataHeap);
-	Module._free(o.dataHeap.byteOffset);
-	return result;
+function dataResult (buffer, bytes) {
+	return new Uint8Array(
+		new Uint8Array(Module.HEAPU8.buffer, buffer, bytes)
+	);
+}
+
+function dataFree (buffer) {
+	try {
+		Module._free(buffer);
+	}
+	catch (_) {}
 }
 
 
-var seedlength	= 512;
-var seed		= dataAllocate(crypto.getRandomValues(new Uint8Array(seedlength)));
-Module.ccall('init', 'number', ['number', 'number'], [dataArgument(seed), seedlength]);
-dataResult(seed);
-
-
-var keypair	= Module.cwrap('keypair', 'number', ['number', 'number']);
-var encrypt	= Module.cwrap('encrypt', 'number', ['number', 'number', 'number', 'number', 'number']);
-var decrypt	= Module.cwrap('decrypt', 'number', ['number', 'number', 'number', 'number', 'number']);
+Module._ntrujs_init();
 
 
 var ntru	= {
-	publicKeyLength: Module.ccall('publen', 'number'),
-	privateKeyLength: Module.ccall('privlen', 'number'),
-	encryptedDataLength: Module.ccall('enclen', 'number'),
-	decryptedDataLength: Module.ccall('declen', 'number'),
+	publicKeyLength: Module._ntrujs_public_key_bytes(),
+	privateKeyLength: Module._ntrujs_secret_key_bytes(),
+	encryptedDataLength: Module._ntrujs_encrypted_bytes(),
+	decryptedDataLength: Module._ntrujs_decrypted_bytes(),
 
 	keyPair: function () {
-		var pub		= dataAllocate(ntru.publicKeyLength);
-		var priv	= dataAllocate(ntru.privateKeyLength);
+		var publicKeyBuffer		= Module._malloc(ntru.publicKeyLength);
+		var privateKeyBuffer	= Module._malloc(ntru.privateKeyLength);
 
-		var returnValue	= keypair(
-			dataArgument(pub),
-			dataArgument(priv)
-		);
+		try {
+			var returnValue	= Module._ntrujs_keypair(
+				publicKeyBuffer,
+				privateKeyBuffer
+			);
 
-		return dataReturn(returnValue, {
-			publicKey: dataResult(pub),
-			privateKey: dataResult(priv)
-		});
+			return dataReturn(returnValue, {
+				publicKey: dataResult(publicKeyBuffer, ntru.publicKeyLength),
+				privateKey: dataResult(privateKeyBuffer, ntru.privateKeyLength)
+			});
+		}
+		finally {
+			dataFree(publicKeyBuffer);
+			dataFree(privateKeyBuffer);
+		}
 	},
+
 	encrypt: function (message, publicKey) {
-		var msg	= dataAllocate(message);
-		var pub	= dataAllocate(publicKey);
-		var enc	= dataAllocate(ntru.encryptedDataLength);
+		var messageBuffer	= Module._malloc(message.length);
+		var publicKeyBuffer	= Module._malloc(ntru.publicKeyLength);
+		var encryptedBuffer	= Module._malloc(ntru.encryptedDataLength);
 
-		var returnValue	= encrypt(
-			dataArgument(msg),
-			msg.data.length,
-			dataArgument(pub),
-			pub.data.length,
-			dataArgument(enc)
-		);
+		Module.writeArrayToMemory(message, messageBuffer);
+		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
-		dataResult(msg);
-		dataResult(pub);
+		try {
+			var returnValue	= Module._ntrujs_encrypt(
+				messageBuffer,
+				message.length,
+				publicKeyBuffer,
+				encryptedBuffer
+			);
 
-		return dataReturn(returnValue, dataResult(enc));
-	},
-	decrypt: function (message, privateKey) {
-		var enc		= dataAllocate(message);
-		var priv	= dataAllocate(privateKey);
-		var dec		= dataAllocate(ntru.decryptedDataLength);
-
-		var returnValue	= decrypt(
-			dataArgument(enc),
-			enc.data.length,
-			dataArgument(priv),
-			priv.data.length,
-			dataArgument(dec)
-		);
-
-		dataResult(enc);
-		dataResult(priv);
-
-		if (returnValue >= 0) {
-			return new Uint8Array(
-				dataResult(dec).buffer,
-				0,
-				returnValue
+			return dataReturn(
+				returnValue,
+				dataResult(encryptedBuffer, ntru.encryptedDataLength)
 			);
 		}
-		else {
-			dataReturn(-returnValue);
+		finally {
+			dataFree(messageBuffer);
+			dataFree(publicKeyBuffer);
+			dataFree(encryptedBuffer);
+		}
+	},
+
+	decrypt: function (encrypted, privateKey) {
+		var encryptedBuffer		= Module._malloc(ntru.encryptedDataLength);
+		var privateKeyBuffer	= Module._malloc(ntru.privateKeyLength);
+		var decryptedBuffer		= Module._malloc(ntru.decryptedDataLength);
+
+		Module.writeArrayToMemory(encrypted, encryptedBuffer);
+		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
+
+		try {
+			var returnValue	= Module._ntrujs_decrypt(
+				encryptedBuffer,
+				privateKeyBuffer,
+				decryptedBuffer
+			);
+
+			if (returnValue >= 0) {
+				return dataResult(decryptedBuffer, returnValue);
+			}
+			else {
+				dataReturn(-returnValue);
+			}
+		}
+		finally {
+			dataFree(encryptedBuffer);
+			dataFree(privateKeyBuffer);
+			dataFree(decryptedBuffer);
 		}
 	}
 };

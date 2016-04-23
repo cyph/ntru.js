@@ -1,132 +1,108 @@
+#include "randombytes.h"
 #include "ntru_crypto.h"
 #include "ntru_crypto_ntru_encrypt_param_sets.h"
 
 DRBG_HANDLE drbg;
-uint8_t* drbgseed;
-int drbgseedlength;
 uint16_t public_key_len;
 uint16_t private_key_len;
-uint16_t ciphertext_len;
+uint16_t cyphertext_len;
 uint16_t plaintext_len;
 
 
-/* Adapted from NTRUEncrypt/sample/sample_NTRUEncrypt.c */
-
-static uint8_t const pers_str[]	= {'C', 'y', 'p', 'h', 'M', 'e', 'B', 'r', 'o'};
-
-uint8_t get_entropy (ENTROPY_CMD cmd, uint8_t *out) {
-	size_t index;
-
-	if (cmd == INIT) {
-		index = 0;
-		return 1;
-	}
-
-	if (out == NULL) {
-		return 0;
-	}
-
-	if (cmd == GET_NUM_BYTES_PER_BYTE_OF_ENTROPY) {
-		*out = 1;
-		return 1;
-	}
-
-	if (cmd == GET_BYTE_OF_ENTROPY) {
-		if (index == drbgseedlength) {
-			return 0;
-		}
-
-		*out = drbgseed[index++];
-		return 1;
-	}
-
-	return 0;
+uint32_t dbrg_randombytes (uint8_t *out, uint32_t num_bytes) {
+	randombytes_buf(out, num_bytes);
+	DRBG_RET(DRBG_OK);
 }
 
-
-int init (uint8_t* seed, int seedlength) {
-	drbgseed		= malloc(seedlength);
-	drbgseedlength	= seedlength;
-	memcpy(drbgseed, seed, seedlength);
-
-	NTRU_ENCRYPT_PARAM_SET* params_data	= ntru_encrypt_get_params_with_id(params);
-
-	int rc	= ntru_crypto_drbg_instantiate(
-		params_data->sec_strength_len * 8,
-		pers_str,
-		sizeof(pers_str),
-		(ENTROPY_FN) &get_entropy,
+void ntrujs_init () {
+	randombytes_stir();
+	ntru_crypto_drbg_external_instantiate(
+		(RANDOM_BYTES_FN) &dbrg_randombytes,
 		&drbg
 	);
 
+	NTRU_ENCRYPT_PARAM_SET* params_data	=
+		ntru_encrypt_get_params_with_id(PARAMS)
+	;
+
 	ntru_crypto_ntru_encrypt_keygen(
 		drbg,
-		params,
+		PARAMS,
 		&public_key_len,
 		NULL,
 		&private_key_len,
 		NULL
 	);
 
-	ciphertext_len	= public_key_len - 5;
+	cyphertext_len	= public_key_len - 5;
 	plaintext_len	= params_data->m_len_max;
-
-	return rc;
 }
 
-int publen () {
+int ntrujs_public_key_bytes () {
 	return public_key_len;
 }
 
-int privlen () {
+int ntrujs_secret_key_bytes () {
 	return private_key_len;
 }
 
-int enclen () {
-	return ciphertext_len;
+int ntrujs_encrypted_bytes () {
+	return cyphertext_len;
 }
 
-int declen () {
+int ntrujs_decrypted_bytes () {
 	return plaintext_len;
 }
 
-int keypair (uint8_t* pub, uint8_t* priv) {
+int ntrujs_keypair (
+	uint8_t* public_key,
+	uint8_t* private_key
+) {
 	return ntru_crypto_ntru_encrypt_keygen(
 		drbg,
-		params,
+		PARAMS,
 		&public_key_len,
-		pub,
+		public_key,
 		&private_key_len,
-		priv
+		private_key
 	);
 }
 
-int encrypt (uint8_t* msg, int msg_len, uint8_t* pub, int pub_len, uint8_t* enc) {
+int ntrujs_encrypt (
+	uint8_t* message,
+	int message_len,
+	uint8_t* public_key,
+	uint8_t* cyphertext
+) {
 	return ntru_crypto_ntru_encrypt(
 		drbg,
-		pub_len,
-		pub,
-		msg_len,
-		msg,
-		&ciphertext_len,
-		enc
+		public_key_len,
+		public_key,
+		message_len,
+		message,
+		&cyphertext_len,
+		cyphertext
 	);
 }
 
-int decrypt (uint8_t* enc, int enc_len, uint8_t* priv, int priv_len, uint8_t* dec) {
-	uint16_t dec_len;
+int ntrujs_decrypt (
+	uint8_t* cyphertext,
+	uint8_t* private_key,
+	uint8_t* decrypted
+) {
+	uint16_t decrypted_len	= plaintext_len;
 
 	int rc	= ntru_crypto_ntru_decrypt(
-		priv_len,
-		priv,
-		enc_len,
-		enc,
-		&dec_len,
-		dec
+		private_key_len,
+		private_key,
+		cyphertext_len,
+		cyphertext,
+		&decrypted_len,
+		decrypted
 	);
 
 	if (rc == NTRU_OK) {
-		return dec_len;
+		return decrypted_len;
 	}
 	else {
 		return -rc;

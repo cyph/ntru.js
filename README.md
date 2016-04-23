@@ -8,13 +8,13 @@ A simple wrapper is provided to make NTRU easy to use in Web applications.
 
 The default parameter set is EES439EP1 (roughly equivalent to 256-bit ECC, as per
 [NTRU's documentation](https://github.com/NTRUOpenSourceProject/ntru-crypto/blob/master/reference-code/C/Encrypt/doc/UserNotes-NTRUEncrypt.pdf)).
-To change this, modify line 6 of Makefile and rebuild with `make`.
+To change this, modify line 13 of Makefile and rebuild with `make`.
 
 ## Example Usage
 
-	var plaintext	= new Uint8Array([104, 101, 108, 108, 111]); // ("hello")
-
 	var keyPair		= ntru.keyPair();
+	var plaintext	= new Uint8Array([104, 101, 108, 108, 111, 0]); // "hello"
+
 	var encrypted	= ntru.encrypt(plaintext, keyPair.publicKey);
 	var decrypted	= ntru.decrypt(encrypted, keyPair.privateKey); // same as plaintext
 
