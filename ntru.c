@@ -2,6 +2,7 @@
 #include "ntru_crypto.h"
 #include "ntru_crypto_ntru_encrypt_param_sets.h"
 
+
 DRBG_HANDLE drbg;
 uint16_t public_key_len;
 uint16_t private_key_len;
@@ -42,7 +43,7 @@ int ntrujs_public_key_bytes () {
 	return public_key_len;
 }
 
-int ntrujs_secret_key_bytes () {
+int ntrujs_private_key_bytes () {
 	return private_key_len;
 }
 

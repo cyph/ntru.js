@@ -27,7 +27,7 @@ all:
 				'"'"'_ntrujs_encrypt'"'"', \
 				'"'"'_ntrujs_decrypt'"'"', \
 				'"'"'_ntrujs_public_key_bytes'"'"', \
-				'"'"'_ntrujs_secret_key_bytes'"'"', \
+				'"'"'_ntrujs_private_key_bytes'"'"', \
 				'"'"'_ntrujs_encrypted_bytes'"'"', \
 				'"'"'_ntrujs_decrypted_bytes'"'"' \
 			]\" \

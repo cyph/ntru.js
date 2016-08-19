@@ -4,7 +4,7 @@
 
 The [NTRU](https://github.com/NTRUOpenSourceProject/ntru-crypto) post-quantum asymmetric
 cipher compiled to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten).
-A simple wrapper is provided to make NTRU easy to use in Web applications.
+A simple wrapper is provided to make NTRU easy to use in web applications.
 
 The default parameter set is EES439EP1 (roughly equivalent to 256-bit ECC, as per
 [NTRU's documentation](https://github.com/NTRUOpenSourceProject/ntru-crypto/blob/master/reference-code/C/Encrypt/doc/UserNotes-NTRUEncrypt.pdf)).

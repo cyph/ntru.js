@@ -2666,14 +2666,14 @@ function getTempRet0() {
 function _randombytes_random() {
  var $0 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = _emscripten_asm_const_0(0)|0; //@line 59 "libsodium/src/libsodium/randombytes/randombytes.c"
- return ($0|0); //@line 59 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $0 = _emscripten_asm_const_0(0)|0; //@line 70 "libsodium/src/libsodium/randombytes/randombytes.c"
+ return ($0|0); //@line 70 "libsodium/src/libsodium/randombytes/randombytes.c"
 }
 function _randombytes_stir() {
  var label = 0, sp = 0;
  sp = STACKTOP;
- _emscripten_asm_const_0(1); //@line 73 "libsodium/src/libsodium/randombytes/randombytes.c"
- return; //@line 101 "libsodium/src/libsodium/randombytes/randombytes.c"
+ _emscripten_asm_const_0(1); //@line 85 "libsodium/src/libsodium/randombytes/randombytes.c"
+ return; //@line 113 "libsodium/src/libsodium/randombytes/randombytes.c"
 }
 function _randombytes_buf($buf,$size) {
  $buf = $buf|0;
@@ -2683,27 +2683,27 @@ function _randombytes_buf($buf,$size) {
  STACKTOP = STACKTOP + 16|0;
  $0 = $buf;
  $1 = $size;
- $2 = $0; //@line 141 "libsodium/src/libsodium/randombytes/randombytes.c"
- $p = $2; //@line 141 "libsodium/src/libsodium/randombytes/randombytes.c"
- $i = 0; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $2 = $0; //@line 151 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $p = $2; //@line 151 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $i = 0; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
  while(1) {
-  $3 = $i; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $4 = $1; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $5 = ($3>>>0)<($4>>>0); //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $3 = $i; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $4 = $1; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $5 = ($3>>>0)<($4>>>0); //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
   if (!($5)) {
    break;
   }
-  $6 = (_randombytes_random()|0); //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $7 = $6&255; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $8 = $i; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $9 = $p; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $10 = (($9) + ($8)|0); //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  HEAP8[$10>>0] = $7; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $11 = $i; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $12 = (($11) + 1)|0; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $i = $12; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $6 = (_randombytes_random()|0); //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $7 = $6&255; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $8 = $i; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $9 = $p; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $10 = (($9) + ($8)|0); //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  HEAP8[$10>>0] = $7; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $11 = $i; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $12 = (($11) + 1)|0; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $i = $12; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
  }
- STACKTOP = sp;return; //@line 148 "libsodium/src/libsodium/randombytes/randombytes.c"
+ STACKTOP = sp;return; //@line 158 "libsodium/src/libsodium/randombytes/randombytes.c"
 }
 function _ntru_crypto_drbg_external_instantiate($randombytesfn,$handle) {
  $randombytesfn = $randombytesfn|0;
@@ -22286,59 +22286,59 @@ function _dbrg_randombytes($out,$num_bytes) {
  STACKTOP = STACKTOP + 16|0;
  $0 = $out;
  $1 = $num_bytes;
- $2 = $0; //@line 13 "ntru.c"
- $3 = $1; //@line 13 "ntru.c"
- _randombytes_buf($2,$3); //@line 13 "ntru.c"
- STACKTOP = sp;return 0; //@line 14 "ntru.c"
+ $2 = $0; //@line 14 "ntru.c"
+ $3 = $1; //@line 14 "ntru.c"
+ _randombytes_buf($2,$3); //@line 14 "ntru.c"
+ STACKTOP = sp;return 0; //@line 15 "ntru.c"
 }
 function _ntrujs_init() {
  var $0 = 0, $1 = 0, $2 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $params_data = 0, label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
- _randombytes_stir(); //@line 18 "ntru.c"
- (_ntru_crypto_drbg_external_instantiate(20,900)|0); //@line 19 "ntru.c"
- $0 = (_ntru_encrypt_get_params_with_id(13)|0); //@line 25 "ntru.c"
- $params_data = $0; //@line 24 "ntru.c"
- $1 = HEAP32[900>>2]|0; //@line 29 "ntru.c"
- (_ntru_crypto_ntru_encrypt_keygen($1,13,1448,0,1450,0)|0); //@line 28 "ntru.c"
- $2 = HEAP16[1448>>1]|0; //@line 37 "ntru.c"
- $3 = $2&65535; //@line 37 "ntru.c"
- $4 = (($3) - 5)|0; //@line 37 "ntru.c"
- $5 = $4&65535; //@line 37 "ntru.c"
- HEAP16[1452>>1] = $5; //@line 37 "ntru.c"
- $6 = $params_data; //@line 38 "ntru.c"
- $7 = ((($6)) + 30|0); //@line 38 "ntru.c"
- $8 = HEAP16[$7>>1]|0; //@line 38 "ntru.c"
- HEAP16[1454>>1] = $8; //@line 38 "ntru.c"
- STACKTOP = sp;return; //@line 39 "ntru.c"
+ _randombytes_stir(); //@line 19 "ntru.c"
+ (_ntru_crypto_drbg_external_instantiate(20,900)|0); //@line 20 "ntru.c"
+ $0 = (_ntru_encrypt_get_params_with_id(13)|0); //@line 26 "ntru.c"
+ $params_data = $0; //@line 25 "ntru.c"
+ $1 = HEAP32[900>>2]|0; //@line 30 "ntru.c"
+ (_ntru_crypto_ntru_encrypt_keygen($1,13,1448,0,1450,0)|0); //@line 29 "ntru.c"
+ $2 = HEAP16[1448>>1]|0; //@line 38 "ntru.c"
+ $3 = $2&65535; //@line 38 "ntru.c"
+ $4 = (($3) - 5)|0; //@line 38 "ntru.c"
+ $5 = $4&65535; //@line 38 "ntru.c"
+ HEAP16[1452>>1] = $5; //@line 38 "ntru.c"
+ $6 = $params_data; //@line 39 "ntru.c"
+ $7 = ((($6)) + 30|0); //@line 39 "ntru.c"
+ $8 = HEAP16[$7>>1]|0; //@line 39 "ntru.c"
+ HEAP16[1454>>1] = $8; //@line 39 "ntru.c"
+ STACKTOP = sp;return; //@line 40 "ntru.c"
 }
 function _ntrujs_public_key_bytes() {
  var $0 = 0, $1 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = HEAP16[1448>>1]|0; //@line 42 "ntru.c"
- $1 = $0&65535; //@line 42 "ntru.c"
- return ($1|0); //@line 42 "ntru.c"
+ $0 = HEAP16[1448>>1]|0; //@line 43 "ntru.c"
+ $1 = $0&65535; //@line 43 "ntru.c"
+ return ($1|0); //@line 43 "ntru.c"
 }
-function _ntrujs_secret_key_bytes() {
+function _ntrujs_private_key_bytes() {
  var $0 = 0, $1 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = HEAP16[1450>>1]|0; //@line 46 "ntru.c"
- $1 = $0&65535; //@line 46 "ntru.c"
- return ($1|0); //@line 46 "ntru.c"
+ $0 = HEAP16[1450>>1]|0; //@line 47 "ntru.c"
+ $1 = $0&65535; //@line 47 "ntru.c"
+ return ($1|0); //@line 47 "ntru.c"
 }
 function _ntrujs_encrypted_bytes() {
  var $0 = 0, $1 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = HEAP16[1452>>1]|0; //@line 50 "ntru.c"
- $1 = $0&65535; //@line 50 "ntru.c"
- return ($1|0); //@line 50 "ntru.c"
+ $0 = HEAP16[1452>>1]|0; //@line 51 "ntru.c"
+ $1 = $0&65535; //@line 51 "ntru.c"
+ return ($1|0); //@line 51 "ntru.c"
 }
 function _ntrujs_decrypted_bytes() {
  var $0 = 0, $1 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = HEAP16[1454>>1]|0; //@line 54 "ntru.c"
- $1 = $0&65535; //@line 54 "ntru.c"
- return ($1|0); //@line 54 "ntru.c"
+ $0 = HEAP16[1454>>1]|0; //@line 55 "ntru.c"
+ $1 = $0&65535; //@line 55 "ntru.c"
+ return ($1|0); //@line 55 "ntru.c"
 }
 function _ntrujs_keypair($public_key,$private_key) {
  $public_key = $public_key|0;
@@ -22348,11 +22348,11 @@ function _ntrujs_keypair($public_key,$private_key) {
  STACKTOP = STACKTOP + 16|0;
  $0 = $public_key;
  $1 = $private_key;
- $2 = HEAP32[900>>2]|0; //@line 62 "ntru.c"
- $3 = $0; //@line 65 "ntru.c"
- $4 = $1; //@line 67 "ntru.c"
- $5 = (_ntru_crypto_ntru_encrypt_keygen($2,13,1448,$3,1450,$4)|0); //@line 61 "ntru.c"
- STACKTOP = sp;return ($5|0); //@line 61 "ntru.c"
+ $2 = HEAP32[900>>2]|0; //@line 63 "ntru.c"
+ $3 = $0; //@line 66 "ntru.c"
+ $4 = $1; //@line 68 "ntru.c"
+ $5 = (_ntru_crypto_ntru_encrypt_keygen($2,13,1448,$3,1450,$4)|0); //@line 62 "ntru.c"
+ STACKTOP = sp;return ($5|0); //@line 62 "ntru.c"
 }
 function _ntrujs_encrypt($message,$message_len,$public_key,$cyphertext) {
  $message = $message|0;
@@ -22366,15 +22366,15 @@ function _ntrujs_encrypt($message,$message_len,$public_key,$cyphertext) {
  $1 = $message_len;
  $2 = $public_key;
  $3 = $cyphertext;
- $4 = HEAP32[900>>2]|0; //@line 78 "ntru.c"
- $5 = HEAP16[1448>>1]|0; //@line 79 "ntru.c"
- $6 = $2; //@line 80 "ntru.c"
- $7 = $1; //@line 81 "ntru.c"
- $8 = $7&65535; //@line 81 "ntru.c"
- $9 = $0; //@line 82 "ntru.c"
- $10 = $3; //@line 84 "ntru.c"
- $11 = (_ntru_crypto_ntru_encrypt($4,$5,$6,$8,$9,1452,$10)|0); //@line 77 "ntru.c"
- STACKTOP = sp;return ($11|0); //@line 77 "ntru.c"
+ $4 = HEAP32[900>>2]|0; //@line 79 "ntru.c"
+ $5 = HEAP16[1448>>1]|0; //@line 80 "ntru.c"
+ $6 = $2; //@line 81 "ntru.c"
+ $7 = $1; //@line 82 "ntru.c"
+ $8 = $7&65535; //@line 82 "ntru.c"
+ $9 = $0; //@line 83 "ntru.c"
+ $10 = $3; //@line 85 "ntru.c"
+ $11 = (_ntru_crypto_ntru_encrypt($4,$5,$6,$8,$9,1452,$10)|0); //@line 78 "ntru.c"
+ STACKTOP = sp;return ($11|0); //@line 78 "ntru.c"
 }
 function _ntrujs_decrypt($cyphertext,$private_key,$decrypted) {
  $cyphertext = $cyphertext|0;
@@ -22388,29 +22388,29 @@ function _ntrujs_decrypt($cyphertext,$private_key,$decrypted) {
  $1 = $cyphertext;
  $2 = $private_key;
  $3 = $decrypted;
- $4 = HEAP16[1454>>1]|0; //@line 93 "ntru.c"
- HEAP16[$decrypted_len>>1] = $4; //@line 93 "ntru.c"
- $5 = HEAP16[1450>>1]|0; //@line 96 "ntru.c"
- $6 = $2; //@line 97 "ntru.c"
- $7 = HEAP16[1452>>1]|0; //@line 98 "ntru.c"
- $8 = $1; //@line 99 "ntru.c"
- $9 = $3; //@line 101 "ntru.c"
- $10 = (_ntru_crypto_ntru_decrypt($5,$6,$7,$8,$decrypted_len,$9)|0); //@line 95 "ntru.c"
- $rc = $10; //@line 95 "ntru.c"
- $11 = $rc; //@line 104 "ntru.c"
- $12 = ($11|0)==(0); //@line 104 "ntru.c"
+ $4 = HEAP16[1454>>1]|0; //@line 94 "ntru.c"
+ HEAP16[$decrypted_len>>1] = $4; //@line 94 "ntru.c"
+ $5 = HEAP16[1450>>1]|0; //@line 97 "ntru.c"
+ $6 = $2; //@line 98 "ntru.c"
+ $7 = HEAP16[1452>>1]|0; //@line 99 "ntru.c"
+ $8 = $1; //@line 100 "ntru.c"
+ $9 = $3; //@line 102 "ntru.c"
+ $10 = (_ntru_crypto_ntru_decrypt($5,$6,$7,$8,$decrypted_len,$9)|0); //@line 96 "ntru.c"
+ $rc = $10; //@line 96 "ntru.c"
+ $11 = $rc; //@line 105 "ntru.c"
+ $12 = ($11|0)==(0); //@line 105 "ntru.c"
  if ($12) {
-  $13 = HEAP16[$decrypted_len>>1]|0; //@line 105 "ntru.c"
-  $14 = $13&65535; //@line 105 "ntru.c"
-  $0 = $14; //@line 105 "ntru.c"
-  $17 = $0; //@line 110 "ntru.c"
-  STACKTOP = sp;return ($17|0); //@line 110 "ntru.c"
+  $13 = HEAP16[$decrypted_len>>1]|0; //@line 106 "ntru.c"
+  $14 = $13&65535; //@line 106 "ntru.c"
+  $0 = $14; //@line 106 "ntru.c"
+  $17 = $0; //@line 111 "ntru.c"
+  STACKTOP = sp;return ($17|0); //@line 111 "ntru.c"
  } else {
-  $15 = $rc; //@line 108 "ntru.c"
-  $16 = (0 - ($15))|0; //@line 108 "ntru.c"
-  $0 = $16; //@line 108 "ntru.c"
-  $17 = $0; //@line 110 "ntru.c"
-  STACKTOP = sp;return ($17|0); //@line 110 "ntru.c"
+  $15 = $rc; //@line 109 "ntru.c"
+  $16 = (0 - ($15))|0; //@line 109 "ntru.c"
+  $0 = $16; //@line 109 "ntru.c"
+  $17 = $0; //@line 111 "ntru.c"
+  STACKTOP = sp;return ($17|0); //@line 111 "ntru.c"
  }
  return (0)|0;
 }
@@ -26006,7 +26006,7 @@ var FUNCTION_TABLE_iiii = [b1,jsCall_iiii_0,jsCall_iiii_1,jsCall_iiii_2,jsCall_i
 var FUNCTION_TABLE_iii = [b2,jsCall_iii_0,jsCall_iii_1,jsCall_iii_2,jsCall_iii_3,jsCall_iii_4,jsCall_iii_5,jsCall_iii_6,jsCall_iii_7,b2,b2,b2,b2,b2,b2,b2,b2,b2,_ntru_crypto_sha1_final,_ntru_crypto_sha256_final,_dbrg_randombytes,b2,b2,b2,b2,b2,b2,b2,b2
 ,b2,b2,b2];
 
-  return { _free: _free, _ntrujs_decrypted_bytes: _ntrujs_decrypted_bytes, _ntrujs_init: _ntrujs_init, _memmove: _memmove, _ntrujs_encrypt: _ntrujs_encrypt, _memset: _memset, _malloc: _malloc, _ntrujs_public_key_bytes: _ntrujs_public_key_bytes, _memcpy: _memcpy, _ntrujs_encrypted_bytes: _ntrujs_encrypted_bytes, _ntrujs_secret_key_bytes: _ntrujs_secret_key_bytes, _ntrujs_keypair: _ntrujs_keypair, _ntrujs_decrypt: _ntrujs_decrypt, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_ii: dynCall_ii, dynCall_iiii: dynCall_iiii, dynCall_iii: dynCall_iii };
+  return { _free: _free, _ntrujs_decrypt: _ntrujs_decrypt, _ntrujs_decrypted_bytes: _ntrujs_decrypted_bytes, _ntrujs_init: _ntrujs_init, _memmove: _memmove, _ntrujs_encrypt: _ntrujs_encrypt, _memset: _memset, _malloc: _malloc, _ntrujs_public_key_bytes: _ntrujs_public_key_bytes, _memcpy: _memcpy, _ntrujs_encrypted_bytes: _ntrujs_encrypted_bytes, _ntrujs_keypair: _ntrujs_keypair, _ntrujs_private_key_bytes: _ntrujs_private_key_bytes, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_ii: dynCall_ii, dynCall_iiii: dynCall_iiii, dynCall_iii: dynCall_iii };
 })
 // EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg, Module.asmLibraryArg, buffer);
@@ -26021,7 +26021,7 @@ var _malloc = Module["_malloc"] = asm["_malloc"];
 var _ntrujs_decrypted_bytes = Module["_ntrujs_decrypted_bytes"] = asm["_ntrujs_decrypted_bytes"];
 var _memcpy = Module["_memcpy"] = asm["_memcpy"];
 var _ntrujs_encrypted_bytes = Module["_ntrujs_encrypted_bytes"] = asm["_ntrujs_encrypted_bytes"];
-var _ntrujs_secret_key_bytes = Module["_ntrujs_secret_key_bytes"] = asm["_ntrujs_secret_key_bytes"];
+var _ntrujs_private_key_bytes = Module["_ntrujs_private_key_bytes"] = asm["_ntrujs_private_key_bytes"];
 var _ntrujs_keypair = Module["_ntrujs_keypair"] = asm["_ntrujs_keypair"];
 var _ntrujs_decrypt = Module["_ntrujs_decrypt"] = asm["_ntrujs_decrypt"];
 var dynCall_ii = Module["dynCall_ii"] = asm["dynCall_ii"];
@@ -26286,7 +26286,7 @@ Module._ntrujs_init();
 
 var ntru	= {
 	publicKeyLength: Module._ntrujs_public_key_bytes(),
-	privateKeyLength: Module._ntrujs_secret_key_bytes(),
+	privateKeyLength: Module._ntrujs_private_key_bytes(),
 	encryptedDataLength: Module._ntrujs_encrypted_bytes(),
 	decryptedDataLength: Module._ntrujs_decrypted_bytes(),
 

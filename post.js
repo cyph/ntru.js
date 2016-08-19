@@ -28,7 +28,7 @@ Module._ntrujs_init();
 
 var ntru	= {
 	publicKeyLength: Module._ntrujs_public_key_bytes(),
-	privateKeyLength: Module._ntrujs_secret_key_bytes(),
+	privateKeyLength: Module._ntrujs_private_key_bytes(),
 	encryptedDataLength: Module._ntrujs_encrypted_bytes(),
 	decryptedDataLength: Module._ntrujs_decrypted_bytes(),
 
