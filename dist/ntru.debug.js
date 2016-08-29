@@ -22297,10 +22297,10 @@ function _ntrujs_init() {
  STACKTOP = STACKTOP + 16|0;
  _randombytes_stir(); //@line 19 "ntru.c"
  (_ntru_crypto_drbg_external_instantiate(20,900)|0); //@line 20 "ntru.c"
- $0 = (_ntru_encrypt_get_params_with_id(13)|0); //@line 26 "ntru.c"
+ $0 = (_ntru_encrypt_get_params_with_id(15)|0); //@line 26 "ntru.c"
  $params_data = $0; //@line 25 "ntru.c"
  $1 = HEAP32[900>>2]|0; //@line 30 "ntru.c"
- (_ntru_crypto_ntru_encrypt_keygen($1,13,1448,0,1450,0)|0); //@line 29 "ntru.c"
+ (_ntru_crypto_ntru_encrypt_keygen($1,15,1448,0,1450,0)|0); //@line 29 "ntru.c"
  $2 = HEAP16[1448>>1]|0; //@line 38 "ntru.c"
  $3 = $2&65535; //@line 38 "ntru.c"
  $4 = (($3) - 5)|0; //@line 38 "ntru.c"
@@ -22351,7 +22351,7 @@ function _ntrujs_keypair($public_key,$private_key) {
  $2 = HEAP32[900>>2]|0; //@line 63 "ntru.c"
  $3 = $0; //@line 66 "ntru.c"
  $4 = $1; //@line 68 "ntru.c"
- $5 = (_ntru_crypto_ntru_encrypt_keygen($2,13,1448,$3,1450,$4)|0); //@line 62 "ntru.c"
+ $5 = (_ntru_crypto_ntru_encrypt_keygen($2,15,1448,$3,1450,$4)|0); //@line 62 "ntru.c"
  STACKTOP = sp;return ($5|0); //@line 62 "ntru.c"
 }
 function _ntrujs_encrypt($message,$message_len,$public_key,$cyphertext) {
