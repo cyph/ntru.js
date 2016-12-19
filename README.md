@@ -12,11 +12,21 @@ To change this, modify line 13 of Makefile and rebuild with `make`.
 
 ## Example Usage
 
-	var keyPair		= ntru.keyPair();
-	var plaintext	= new Uint8Array([104, 101, 108, 108, 111, 0]); // "hello"
+	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		ntru.keyPair()
+	;
 
-	var encrypted	= ntru.encrypt(plaintext, keyPair.publicKey);
-	var decrypted	= ntru.decrypt(encrypted, keyPair.privateKey); // same as plaintext
+	const plaintext /*: Uint8Array */ =
+		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+	;
+
+	const encrypted /*: Uint8Array */ =
+		ntru.encrypt(plaintext, keyPair.publicKey)
+	;
+
+	const decrypted /*: Uint8Array */ =
+		ntru.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+	;
 
 Note: NTRU generally shouldn't be used to directly encrypt your data; in most cases, you'll
 want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
