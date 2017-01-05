@@ -25126,14 +25126,20 @@ Module._ntrujs_init();
 
 
 var ntru	= {
+	publicKeyBytes: Module._ntrujs_public_key_bytes(),
+	privateKeyBytes: Module._ntrujs_private_key_bytes(),
+	cyphertextBytes: Module._ntrujs_encrypted_bytes(),
+	plaintextBytes: Module._ntrujs_decrypted_bytes(),
+
+	/* Backwards compatibility */
 	publicKeyLength: Module._ntrujs_public_key_bytes(),
 	privateKeyLength: Module._ntrujs_private_key_bytes(),
 	encryptedDataLength: Module._ntrujs_encrypted_bytes(),
 	decryptedDataLength: Module._ntrujs_decrypted_bytes(),
 
 	keyPair: function () {
-		var publicKeyBuffer		= Module._malloc(ntru.publicKeyLength);
-		var privateKeyBuffer	= Module._malloc(ntru.privateKeyLength);
+		var publicKeyBuffer		= Module._malloc(ntru.publicKeyBytes);
+		var privateKeyBuffer	= Module._malloc(ntru.privateKeyBytes);
 
 		try {
 			var returnValue	= Module._ntrujs_keypair(
@@ -25142,8 +25148,8 @@ var ntru	= {
 			);
 
 			return dataReturn(returnValue, {
-				publicKey: dataResult(publicKeyBuffer, ntru.publicKeyLength),
-				privateKey: dataResult(privateKeyBuffer, ntru.privateKeyLength)
+				publicKey: dataResult(publicKeyBuffer, ntru.publicKeyBytes),
+				privateKey: dataResult(privateKeyBuffer, ntru.privateKeyBytes)
 			});
 		}
 		finally {
@@ -25154,8 +25160,8 @@ var ntru	= {
 
 	encrypt: function (message, publicKey) {
 		var messageBuffer	= Module._malloc(message.length);
-		var publicKeyBuffer	= Module._malloc(ntru.publicKeyLength);
-		var encryptedBuffer	= Module._malloc(ntru.encryptedDataLength);
+		var publicKeyBuffer	= Module._malloc(ntru.publicKeyBytes);
+		var encryptedBuffer	= Module._malloc(ntru.cyphertextBytes);
 
 		Module.writeArrayToMemory(message, messageBuffer);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
@@ -25170,7 +25176,7 @@ var ntru	= {
 
 			return dataReturn(
 				returnValue,
-				dataResult(encryptedBuffer, ntru.encryptedDataLength)
+				dataResult(encryptedBuffer, ntru.cyphertextBytes)
 			);
 		}
 		finally {
@@ -25181,9 +25187,9 @@ var ntru	= {
 	},
 
 	decrypt: function (encrypted, privateKey) {
-		var encryptedBuffer		= Module._malloc(ntru.encryptedDataLength);
-		var privateKeyBuffer	= Module._malloc(ntru.privateKeyLength);
-		var decryptedBuffer		= Module._malloc(ntru.decryptedDataLength);
+		var encryptedBuffer		= Module._malloc(ntru.cyphertextBytes);
+		var privateKeyBuffer	= Module._malloc(ntru.privateKeyBytes);
+		var decryptedBuffer		= Module._malloc(ntru.plaintextBytes);
 
 		Module.writeArrayToMemory(encrypted, encryptedBuffer);
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
@@ -25216,6 +25222,13 @@ return ntru;
 
 }());
 
-self.ntru	= ntru;
+
+if (typeof module !== 'undefined' && module.exports) {
+	ntru.ntru		= ntru;
+	module.exports	= ntru;
+}
+else {
+	self.ntru		= ntru;
+}
 
 //# sourceMappingURL=ntru.debug.js.map
