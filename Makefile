@@ -38,6 +38,8 @@ all:
 		bash -c "emcc -O0 -g4 $$args -o dist/ntru.debug.js"; \
 	'
 
+	sed -i 's|require(|eval("require")(|g' dist/ntru.js
+
 	rm -rf NTRUEncrypt libsodium
 
 clean:
