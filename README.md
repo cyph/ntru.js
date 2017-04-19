@@ -2,7 +2,7 @@
 
 ## Overview
 
-The [NTRU](https://github.com/NTRUOpenSourceProject/ntru-crypto) post-quantum asymmetric
+The [NTRU](https://en.wikipedia.org/wiki/NTRUEncrypt) post-quantum asymmetric
 cipher compiled to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten).
 A simple wrapper is provided to make NTRU easy to use in web applications.
 
