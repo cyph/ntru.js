@@ -2,10 +2,10 @@ all:
 	rm -rf dist NTRUEncrypt libsodium 2> /dev/null
 	mkdir dist
 
-	git clone -b stable https://github.com/jedisct1/libsodium.git
+	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	git clone https://github.com/NTRUOpenSourceProject/NTRUEncrypt.git
+	git clone --depth 1 https://github.com/NTRUOpenSourceProject/NTRUEncrypt
 
 	bash -c ' \
 		args="$$(echo " \
