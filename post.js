@@ -54,6 +54,10 @@ var ntru	= {
 	},
 
 	encrypt: function (message, publicKey) {
+		if (message.length > ntru.plaintextBytes) {
+			throw new Error('Plaintext length exceeds ntru.plaintextBytes.');
+		}
+
 		var messageBuffer	= Module._malloc(message.length);
 		var publicKeyBuffer	= Module._malloc(ntru.publicKeyBytes);
 		var encryptedBuffer	= Module._malloc(ntru.cyphertextBytes);
