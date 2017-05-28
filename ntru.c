@@ -39,23 +39,23 @@ void ntrujs_init () {
 	plaintext_len	= params_data->m_len_max;
 }
 
-int ntrujs_public_key_bytes () {
+long ntrujs_public_key_bytes () {
 	return public_key_len;
 }
 
-int ntrujs_private_key_bytes () {
+long ntrujs_private_key_bytes () {
 	return private_key_len;
 }
 
-int ntrujs_encrypted_bytes () {
+long ntrujs_encrypted_bytes () {
 	return cyphertext_len;
 }
 
-int ntrujs_decrypted_bytes () {
+long ntrujs_decrypted_bytes () {
 	return plaintext_len;
 }
 
-int ntrujs_keypair (
+long ntrujs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
 ) {
@@ -69,9 +69,9 @@ int ntrujs_keypair (
 	);
 }
 
-int ntrujs_encrypt (
+long ntrujs_encrypt (
 	uint8_t* message,
-	int message_len,
+	long message_len,
 	uint8_t* public_key,
 	uint8_t* cyphertext
 ) {
@@ -86,14 +86,14 @@ int ntrujs_encrypt (
 	);
 }
 
-int ntrujs_decrypt (
+long ntrujs_decrypt (
 	uint8_t* cyphertext,
 	uint8_t* private_key,
 	uint8_t* decrypted
 ) {
-	uint16_t decrypted_len	= plaintext_len;
+	uint16_t decrypted_len;
 
-	int rc	= ntru_crypto_ntru_decrypt(
+	long rc	= ntru_crypto_ntru_decrypt(
 		private_key_len,
 		private_key,
 		cyphertext_len,
