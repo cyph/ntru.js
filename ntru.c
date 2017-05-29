@@ -91,7 +91,7 @@ long ntrujs_decrypt (
 	uint8_t* private_key,
 	uint8_t* decrypted
 ) {
-	uint16_t decrypted_len;
+	uint16_t decrypted_len	= plaintext_len;
 
 	long rc	= ntru_crypto_ntru_decrypt(
 		private_key_len,
