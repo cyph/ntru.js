@@ -21406,35 +21406,37 @@ function _ntrujs_decrypt($0,$1,$2) {
  $0 = $0|0;
  $1 = $1|0;
  $2 = $2|0;
- var $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $20 = 0, $21 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, label = 0;
- var sp = 0;
+ var $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $20 = 0, $21 = 0, $22 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0;
+ var label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 32|0;
  $7 = sp + 20|0;
  $4 = $0;
  $5 = $1;
  $6 = $2;
- $9 = HEAP16[1327]|0; //@line 97 "ntru.c"
- $10 = $5; //@line 98 "ntru.c"
- $11 = HEAP16[1328]|0; //@line 99 "ntru.c"
- $12 = $4; //@line 100 "ntru.c"
- $13 = $6; //@line 102 "ntru.c"
- $14 = (_ntru_crypto_ntru_decrypt($9,$10,$11,$12,$7,$13)|0); //@line 96 "ntru.c"
- $8 = $14; //@line 96 "ntru.c"
- $15 = $8; //@line 105 "ntru.c"
- $16 = ($15|0)==(0); //@line 105 "ntru.c"
- if ($16) {
-  $17 = HEAP16[$7>>1]|0; //@line 106 "ntru.c"
-  $18 = $17&65535; //@line 106 "ntru.c"
-  $3 = $18; //@line 106 "ntru.c"
-  $21 = $3; //@line 111 "ntru.c"
-  STACKTOP = sp;return ($21|0); //@line 111 "ntru.c"
+ $9 = HEAP16[1329]|0; //@line 94 "ntru.c"
+ HEAP16[$7>>1] = $9; //@line 94 "ntru.c"
+ $10 = HEAP16[1327]|0; //@line 97 "ntru.c"
+ $11 = $5; //@line 98 "ntru.c"
+ $12 = HEAP16[1328]|0; //@line 99 "ntru.c"
+ $13 = $4; //@line 100 "ntru.c"
+ $14 = $6; //@line 102 "ntru.c"
+ $15 = (_ntru_crypto_ntru_decrypt($10,$11,$12,$13,$7,$14)|0); //@line 96 "ntru.c"
+ $8 = $15; //@line 96 "ntru.c"
+ $16 = $8; //@line 105 "ntru.c"
+ $17 = ($16|0)==(0); //@line 105 "ntru.c"
+ if ($17) {
+  $18 = HEAP16[$7>>1]|0; //@line 106 "ntru.c"
+  $19 = $18&65535; //@line 106 "ntru.c"
+  $3 = $19; //@line 106 "ntru.c"
+  $22 = $3; //@line 111 "ntru.c"
+  STACKTOP = sp;return ($22|0); //@line 111 "ntru.c"
  } else {
-  $19 = $8; //@line 109 "ntru.c"
-  $20 = (0 - ($19))|0; //@line 109 "ntru.c"
-  $3 = $20; //@line 109 "ntru.c"
-  $21 = $3; //@line 111 "ntru.c"
-  STACKTOP = sp;return ($21|0); //@line 111 "ntru.c"
+  $20 = $8; //@line 109 "ntru.c"
+  $21 = (0 - ($20))|0; //@line 109 "ntru.c"
+  $3 = $21; //@line 109 "ntru.c"
+  $22 = $3; //@line 111 "ntru.c"
+  STACKTOP = sp;return ($22|0); //@line 111 "ntru.c"
  }
  return (0)|0;
 }
