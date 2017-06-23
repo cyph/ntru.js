@@ -1,25 +1,25 @@
 declare module 'ntru' {
 	interface INTRU {
 		/** Maximum plaintext length. */
-		plaintextBytes: number;
+		plaintextBytes: Promise<number>;
 
 		/** Cyphertext length. */
-		cyphertextBytes: number;
+		cyphertextBytes: Promise<number>;
 
 		/** Private key length. */
-		privateKeyBytes: number;
+		privateKeyBytes: Promise<number>;
 
 		/** Public key length. */
-		publicKeyBytes: number;
+		publicKeyBytes: Promise<number>;
 
 		/** Decrypts cyphertext with privateKey. */
-		decrypt (encrypted: Uint8Array|string, privateKey: Uint8Array) : Uint8Array;
+		decrypt (encrypted: Uint8Array|string, privateKey: Uint8Array) : Promise<Uint8Array>;
 
 		/** Encrypts plaintext with publicKey. */
-		encrypt (message: Uint8Array|string, publicKey: Uint8Array) : Uint8Array;
+		encrypt (message: Uint8Array|string, publicKey: Uint8Array) : Promise<Uint8Array>;
 
 		/** Generates key pair. */
-		keyPair () : {privateKey: Uint8Array; publicKey: Uint8Array};
+		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
 	}
 
 	const ntru: INTRU;

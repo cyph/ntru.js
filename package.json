@@ -1,7 +1,7 @@
 {
 	"name": "ntru",
-	"version": "2.0.1",
-	"description": "JavaScript wrapper for an asm.js build of NTRU",
+	"version": "3.0.0",
+	"description": "JavaScript wrapper for a WebAssembly build of NTRU",
 	"main": "dist/ntru.js",
 	"types": "./ntru.d.ts",
 	"repository": {
@@ -12,7 +12,8 @@
 		"cryptography",
 		"post-quantum",
 		"ntru",
-		"asm.js"
+		"asm.js",
+		"webassembly"
 	],
 	"author": "Cyph, Inc. <ntru@cyph.com> (https://github.com/cyph)",
 	"license": "BSD-2-Clause",

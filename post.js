@@ -23,18 +23,27 @@ function dataFree (buffer) {
 }
 
 
-Module._ntrujs_init();
+var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
+
+var initiated	= moduleReady.then(function () {
+	Module._ntrujs_init();
+
+	publicKeyBytes	= Module._ntrujs_public_key_bytes();
+	privateKeyBytes	= Module._ntrujs_private_key_bytes();
+	cyphertextBytes	= Module._ntrujs_encrypted_bytes();
+	plaintextBytes	= Module._ntrujs_decrypted_bytes();
+});
 
 
 var ntru	= {
-	publicKeyBytes: Module._ntrujs_public_key_bytes(),
-	privateKeyBytes: Module._ntrujs_private_key_bytes(),
-	cyphertextBytes: Module._ntrujs_encrypted_bytes(),
-	plaintextBytes: Module._ntrujs_decrypted_bytes(),
+	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
+	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
+	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
+	plaintextBytes: initiated.then(function () { return plaintextBytes; }),
 
-	keyPair: function () {
-		var publicKeyBuffer		= Module._malloc(ntru.publicKeyBytes);
-		var privateKeyBuffer	= Module._malloc(ntru.privateKeyBytes);
+	keyPair: function () { return initiated.then(function () {
+		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
+		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 
 		try {
 			var returnValue	= Module._ntrujs_keypair(
@@ -43,24 +52,24 @@ var ntru	= {
 			);
 
 			return dataReturn(returnValue, {
-				publicKey: dataResult(publicKeyBuffer, ntru.publicKeyBytes),
-				privateKey: dataResult(privateKeyBuffer, ntru.privateKeyBytes)
+				publicKey: dataResult(publicKeyBuffer, publicKeyBytes),
+				privateKey: dataResult(privateKeyBuffer, privateKeyBytes)
 			});
 		}
 		finally {
 			dataFree(publicKeyBuffer);
 			dataFree(privateKeyBuffer);
 		}
-	},
+	}); },
 
-	encrypt: function (message, publicKey) {
-		if (message.length > ntru.plaintextBytes) {
+	encrypt: function (message, publicKey) { return initiated.then(function () {
+		if (message.length > plaintextBytes) {
 			throw new Error('Plaintext length exceeds ntru.plaintextBytes.');
 		}
 
 		var messageBuffer	= Module._malloc(message.length);
-		var publicKeyBuffer	= Module._malloc(ntru.publicKeyBytes);
-		var encryptedBuffer	= Module._malloc(ntru.cyphertextBytes);
+		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
+		var encryptedBuffer	= Module._malloc(cyphertextBytes);
 
 		Module.writeArrayToMemory(message, messageBuffer);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
@@ -75,7 +84,7 @@ var ntru	= {
 
 			return dataReturn(
 				returnValue,
-				dataResult(encryptedBuffer, ntru.cyphertextBytes)
+				dataResult(encryptedBuffer, cyphertextBytes)
 			);
 		}
 		finally {
@@ -83,12 +92,12 @@ var ntru	= {
 			dataFree(publicKeyBuffer);
 			dataFree(encryptedBuffer);
 		}
-	},
+	}); },
 
-	decrypt: function (encrypted, privateKey) {
-		var encryptedBuffer		= Module._malloc(ntru.cyphertextBytes);
-		var privateKeyBuffer	= Module._malloc(ntru.privateKeyBytes);
-		var decryptedBuffer		= Module._malloc(ntru.plaintextBytes);
+	decrypt: function (encrypted, privateKey) { return initiated.then(function () {
+		var encryptedBuffer		= Module._malloc(cyphertextBytes);
+		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
+		var decryptedBuffer		= Module._malloc(plaintextBytes);
 
 		Module.writeArrayToMemory(encrypted, encryptedBuffer);
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
@@ -112,7 +121,7 @@ var ntru	= {
 			dataFree(privateKeyBuffer);
 			dataFree(decryptedBuffer);
 		}
-	}
+	}); }
 };
 
 
