@@ -39,27 +39,20 @@ all:
 
 	cp pre.js dist/ntru.tmp.js
 	echo " \
-		var moduleReady; \
-		if (typeof WebAssembly !== 'undefined') { \
+		var finalModule; \
+		var moduleReady = Promise.resolve().then(function () { \
 	" >> dist/ntru.tmp.js
 	cat dist/ntru.wasm.js >> dist/ntru.tmp.js
 	echo " \
-			moduleReady = new Promise(function (resolve) { \
-				var interval = setInterval(function () { \
-					if (!Module.usingWasm) { \
-						return; \
-					} \
-					clearInterval(interval); \
-					resolve(); \
-				}, 50); \
+			return Module['wasmReady'].then(function () { \
+				finalModule = Module; \
 			});\
-		} \
-		else { \
+		}).catch(function () { \
 	" >> dist/ntru.tmp.js
 	cat dist/ntru.asm.js >> dist/ntru.tmp.js
 	echo " \
-			moduleReady = Promise.resolve(); \
-		} \
+			finalModule = Module; \
+		}); \
 	" >> dist/ntru.tmp.js
 	cat post.js >> dist/ntru.tmp.js
 
