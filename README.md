@@ -37,3 +37,16 @@ To change this, modify line 13 of Makefile and rebuild with `make`.
 
 Note: NTRU generally shouldn't be used to directly encrypt your data; in most cases, you'll
 want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
+
+## Changelog
+
+Breaking changes in major versions:
+
+3.0.0:
+
+* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
+the API is fully asynchronous.
+
+2.0.0:
+
+* Removed some undocumented functions as part of minor API cleanup.
