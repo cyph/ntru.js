@@ -18,7 +18,7 @@ To change this, modify line 13 of Makefile and rebuild with `make`.
 		;
 
 		const plaintext /*: Uint8Array */ =
-			await new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+			new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
 		;
 
 		const encrypted /*: Uint8Array */ =
