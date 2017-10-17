@@ -39,19 +39,22 @@ all:
 
 	cp pre.js dist/ntru.tmp.js
 	echo " \
-		var finalModule; \
-		var moduleReady = Promise.resolve().then(function () { \
+		var Module = {}; \
+		var _Module = Module; \
+		Module.ready = new Promise(function (resolve, reject) { \
+			var Module = _Module; \
+			Module.onAbort = reject; \
+			Module.onRuntimeInitialized = resolve; \
 	" >> dist/ntru.tmp.js
 	cat dist/ntru.wasm.js >> dist/ntru.tmp.js
 	echo " \
-			return Module['wasmReady'].then(function () { \
-				finalModule = Module; \
-			});\
 		}).catch(function () { \
+			var Module = _Module; \
+			Module.onAbort = undefined; \
+			Module.onRuntimeInitialized = undefined; \
 	" >> dist/ntru.tmp.js
 	cat dist/ntru.asm.js >> dist/ntru.tmp.js
 	echo " \
-			finalModule = Module; \
 		}); \
 	" >> dist/ntru.tmp.js
 	cat post.js >> dist/ntru.tmp.js
