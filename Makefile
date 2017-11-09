@@ -15,7 +15,7 @@ all:
 			-s NO_DYNAMIC_EXECUTION=1 -s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1 \
 			-s FUNCTION_POINTER_ALIGNMENT=1 -s DISABLE_EXCEPTION_CATCHING=1 \
-			 -s RESERVED_FUNCTION_POINTERS=8 -s NO_FILESYSTEM=1 \
+			-s RESERVED_FUNCTION_POINTERS=8 -s NO_FILESYSTEM=1 \
 			-Ilibsodium/src/libsodium/include/sodium \
 			-INTRUEncrypt/include -INTRUEncrypt/src \
 			libsodium/src/libsodium/randombytes/randombytes.c \
