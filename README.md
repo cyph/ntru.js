@@ -7,7 +7,7 @@ cipher compiled to WebAssembly using [Emscripten](https://github.com/kripken/ems
 A simple JavaScript wrapper is provided to make NTRU easy to use in web applications.
 
 The default parameter set is EES743EP1 (roughly 256-bit strength, as per
-[NTRU's documentation](https://github.com/NTRUOpenSourceProject/ntru-crypto/blob/master/reference-code/C/Encrypt/doc/UserNotes-NTRUEncrypt.pdf)).
+[NTRU's documentation](https://github.com/NTRUOpenSourceProject/NTRUEncrypt/blob/master/doc/UserNotes-NTRUEncrypt.pdf)).
 To change this, modify line 13 of Makefile and rebuild with `make`.
 
 ## Example Usage
