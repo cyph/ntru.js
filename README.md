@@ -35,8 +35,10 @@ To change this, modify line 13 of Makefile and rebuild with `make`.
 		console.log(decrypted);
 	})();
 
-Note: NTRU generally shouldn't be used to directly encrypt your data; in most cases, you'll
-want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
+Note: NTRU is a low-level cryptographic primitive, not a high-level construct like libsodium's
+[crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
+This module can be combined with a symmetric cipher and a MAC to provide such a construct, but you
+should avoid using ntru.js directly for anything important if you lack the experience to do so.
 
 ## Changelog
 
