@@ -1,5 +1,9 @@
 ;
 
+function writeArrayToMemory (array, buffer) {
+	Module.HEAP8.set(array, buffer);
+}
+
 function dataReturn (returnValue, result) {
 	if (returnValue === 0) {
 		return result;
@@ -71,8 +75,8 @@ var ntru	= {
 		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
 		var encryptedBuffer	= Module._malloc(cyphertextBytes);
 
-		Module.writeArrayToMemory(message, messageBuffer);
-		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+		writeArrayToMemory(message, messageBuffer);
+		writeArrayToMemory(publicKey, publicKeyBuffer);
 
 		try {
 			var returnValue	= Module._ntrujs_encrypt(
@@ -99,8 +103,8 @@ var ntru	= {
 		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 		var decryptedBuffer		= Module._malloc(plaintextBytes);
 
-		Module.writeArrayToMemory(encrypted, encryptedBuffer);
-		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
+		writeArrayToMemory(encrypted, encryptedBuffer);
+		writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
 			var returnValue	= Module._ntrujs_decrypt(
