@@ -22,6 +22,8 @@ all:
 			$$(ls NTRUEncrypt/src/*.c | grep -v _simd.c | grep -v _32.c | grep -v _64.c) \
 			ntru.c \
 			-s EXPORTED_FUNCTIONS=\"[ \
+				'"'"'_free'"'"', \
+				'"'"'_malloc'"'"', \
 				'"'"'_ntrujs_init'"'"', \
 				'"'"'_ntrujs_keypair'"'"', \
 				'"'"'_ntrujs_encrypt'"'"', \
