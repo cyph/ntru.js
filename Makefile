@@ -9,7 +9,6 @@ all:
 
 	bash -c ' \
 		args="$$(echo " \
-			--closure 1 \
 			-s SINGLE_FILE=1 \
 			-DPARAMS=NTRU_EES743EP1 \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
