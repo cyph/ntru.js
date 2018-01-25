@@ -26,18 +26,6 @@ function dataFree(buffer) {
   }
 }
 
-
-var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
-
-var initiated = Module.ready.then(function () {
-  Module._ntrujs_init();
-
-  publicKeyBytes = Module._ntrujs_public_key_bytes();
-  privateKeyBytes = Module._ntrujs_private_key_bytes();
-  cyphertextBytes = Module._ntrujs_encrypted_bytes();
-  plaintextBytes = Module._ntrujs_decrypted_bytes();
-});
-
 function NTRU(seed) {
   if (!this instanceof NTRU) {
     return new NTRU(seed);
@@ -55,8 +43,8 @@ function NTRU(seed) {
 
   this.keyPair = function () {
     return this.init.then(function () {
-      var publicKeyBuffer = Module._malloc(publicKeyBytes);
-      var privateKeyBuffer = Module._malloc(privateKeyBytes);
+      var publicKeyBuffer = Module._malloc(that.publicKeyBytes);
+      var privateKeyBuffer = Module._malloc(that.privateKeyBytes);
 
       try {
         var returnValue = Module._ntrujs_keypair(
@@ -65,8 +53,8 @@ function NTRU(seed) {
         );
 
         return dataReturn(returnValue, {
-          publicKey: dataResult(publicKeyBuffer, publicKeyBytes),
-          privateKey: dataResult(privateKeyBuffer, privateKeyBytes)
+          publicKey: dataResult(publicKeyBuffer, that.publicKeyBytes),
+          privateKey: dataResult(privateKeyBuffer, that.privateKeyBytes)
         });
       }
       finally {
@@ -78,13 +66,13 @@ function NTRU(seed) {
 
   this.encrypt = function (message, publicKey) {
     return this.init.then(function () {
-      if (message.length > plaintextBytes) {
+      if (message.length > that.plaintextBytes) {
         throw new Error('Plaintext length exceeds ntru.plaintextBytes.');
       }
 
       var messageBuffer = Module._malloc(message.length);
-      var publicKeyBuffer = Module._malloc(publicKeyBytes);
-      var encryptedBuffer = Module._malloc(cyphertextBytes);
+      var publicKeyBuffer = Module._malloc(that.publicKeyBytes);
+      var encryptedBuffer = Module._malloc(that.cyphertextBytes);
 
       Module.writeArrayToMemory(message, messageBuffer);
       Module.writeArrayToMemory(publicKey, publicKeyBuffer);
@@ -99,7 +87,7 @@ function NTRU(seed) {
 
         return dataReturn(
             returnValue,
-            dataResult(encryptedBuffer, cyphertextBytes)
+            dataResult(encryptedBuffer, that.cyphertextBytes)
         );
       }
       finally {
@@ -112,9 +100,9 @@ function NTRU(seed) {
 
   this.decrypt = function (encrypted, privateKey) {
     return this.init.then(function () {
-      var encryptedBuffer = Module._malloc(cyphertextBytes);
-      var privateKeyBuffer = Module._malloc(privateKeyBytes);
-      var decryptedBuffer = Module._malloc(plaintextBytes);
+      var encryptedBuffer = Module._malloc(that.cyphertextBytes);
+      var privateKeyBuffer = Module._malloc(that.privateKeyBytes);
+      var decryptedBuffer = Module._malloc(that.plaintextBytes);
 
       Module.writeArrayToMemory(encrypted, encryptedBuffer);
       Module.writeArrayToMemory(privateKey, privateKeyBuffer);
