@@ -1,11 +1,11 @@
 all:
-	rm -rf dist NTRUEncrypt libsodium 2> /dev/null
+	rm -rf dist 2> /dev/null
 	mkdir dist
 
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
+	#git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
+	#cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	git clone --depth 1 https://github.com/NTRUOpenSourceProject/NTRUEncrypt
+	#git clone --depth 1 https://github.com/NTRUOpenSourceProject/NTRUEncrypt
 
 	bash -c ' \
 		args="$$(echo " \
@@ -64,13 +64,9 @@ all:
 		}); \
 	" >> dist/ntru.tmp.js
 	cat post.js >> dist/ntru.tmp.js
-
-	uglify-js dist/ntru.tmp.js -cmo dist/ntru.js
-
+	cat dist/ntru.tmp.js >> dist/ntru.js
 	sed -i 's|use asm||g' dist/ntru.js
 	sed -i 's|require(|eval("require")(|g' dist/ntru.js
-
-	rm -rf NTRUEncrypt libsodium dist/ntru.*.js
 
 clean:
 	rm -rf dist NTRUEncrypt libsodium

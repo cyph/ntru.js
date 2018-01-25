@@ -1,16 +1,17 @@
 import assert from 'assert'
-import ntru from '../'
+import NTRU from '../'
 
 describe('ntru test', () => {
   it('should generate keypair', async () => {
-    const keyPair = await ntru.keyPair()
+    const cipher = new NTRU()
+    await cipher.init
+    const keyPair = await cipher.keyPair()
     const plaintext = new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
 
-    const encrypted = await ntru.encrypt(plaintext, keyPair.publicKey)
-    const decrypted = await ntru.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+    const encrypted = await cipher.encrypt(plaintext, keyPair.publicKey)
+    const decrypted = await cipher.decrypt(encrypted, keyPair.privateKey) // same as plaintext
 
-    console.log(keyPair)
-    console.log(encrypted)
+    console.log(cipher.publicKeyBytes, cipher.privateKeyBytes, cipher.cyphertextBytes, cipher.plaintextBytes)
     assert.deepEqual(plaintext, decrypted)
   })
 })
