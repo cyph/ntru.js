@@ -26,15 +26,22 @@ function dataFree(buffer) {
   }
 }
 
+var kSeedLength = 64;
+
 function NTRU(seed) {
   if (!this instanceof NTRU) {
     return new NTRU(seed);
   }
 
   this.seed = seed;
+  var seedBuffer;
+  if (seed) {
+    seedBuffer = Module._malloc(kSeedLength);
+    Module.writeArrayToMemory(seed, seedBuffer);
+  }
   var that = this;
   this.init = Module.ready.then(function () {
-    Module._ntrujs_init();
+    Module._ntrujs_init(seedBuffer);
     that.publicKeyBytes = Module._ntrujs_public_key_bytes();
     that.privateKeyBytes = Module._ntrujs_private_key_bytes();
     that.cyphertextBytes = Module._ntrujs_encrypted_bytes();

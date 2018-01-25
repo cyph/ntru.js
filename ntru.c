@@ -1,7 +1,7 @@
 #include "randombytes.h"
 #include "ntru_crypto.h"
 #include "ntru_crypto_ntru_encrypt_param_sets.h"
-
+#include <memory.h>
 
 DRBG_HANDLE drbg;
 uint16_t public_key_len;
@@ -9,13 +9,18 @@ uint16_t private_key_len;
 uint16_t cyphertext_len;
 uint16_t plaintext_len;
 
-
+uint8_t *user_seed = NULL;
 uint32_t dbrg_randombytes (uint8_t *out, uint32_t num_bytes) {
-	randombytes_buf(out, num_bytes);
+    if (user_seed) {
+        memcpy(out, user_seed, num_bytes);
+    } else {
+	    randombytes_buf(out, num_bytes);
+	}
 	DRBG_RET(DRBG_OK);
 }
 
-void ntrujs_init () {
+void ntrujs_init (uint8_t *seed) {
+    user_seed = seed;
 	randombytes_stir();
 	ntru_crypto_drbg_external_instantiate(
 		(RANDOM_BYTES_FN) &dbrg_randombytes,
