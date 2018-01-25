@@ -6,7 +6,10 @@
 	"types": "./ntru.d.ts",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/cyph/ntru.js.git"
+		"url": "git@github.com:veritas-shine/ntru.js.git"
+	},
+	"scripts": {
+		"test": "NODE_PATH=./src mocha --require babel-core/register --require babel-polyfill --reporter spec test/*-spec.js"
 	},
 	"keywords": [
 		"cryptography",
@@ -19,5 +22,12 @@
 	"license": "BSD-2-Clause",
 	"bugs": {
 		"url": "https://github.com/cyph/ntru.js/issues"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.0",
+		"babel-polyfill": "^6.26.0",
+		"babel-preset-env": "^1.6.1",
+		"babel-preset-stage-0": "^6.24.1",
+		"mocha": "^5.0.0"
 	}
 }
