@@ -1,6 +1,6 @@
 ;
 
-function dataReturn (returnValue, result) {
+function dataReturn(returnValue, result) {
 	if (returnValue === 0) {
 		return result;
 	}
@@ -9,127 +9,147 @@ function dataReturn (returnValue, result) {
 	}
 }
 
-function dataResult (buffer, bytes) {
+function dataResult(buffer, bytes) {
 	return new Uint8Array(
 		new Uint8Array(Module.HEAPU8.buffer, buffer, bytes)
 	);
 }
 
-function dataFree (buffer) {
+function dataFree(buffer) {
 	try {
 		Module._free(buffer);
 	}
 	catch (err) {
-		setTimeout(function () { throw err; }, 0);
+		setTimeout(function () {
+			throw err;
+		}, 0);
 	}
 }
 
+var kSeedLength = 64;
 
-var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
+function NTRU() {
+	if (!this instanceof NTRU) {
+		return new NTRU();
+	}
 
-var initiated	= Module.ready.then(function () {
-	Module._ntrujs_init();
-
-	publicKeyBytes	= Module._ntrujs_public_key_bytes();
-	privateKeyBytes	= Module._ntrujs_private_key_bytes();
-	cyphertextBytes	= Module._ntrujs_encrypted_bytes();
-	plaintextBytes	= Module._ntrujs_decrypted_bytes();
-});
-
-
-var ntru	= {
-	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
-	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
-	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
-	plaintextBytes: initiated.then(function () { return plaintextBytes; }),
-
-	keyPair: function () { return initiated.then(function () {
-		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
-		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
-
-		try {
-			var returnValue	= Module._ntrujs_keypair(
-				publicKeyBuffer,
-				privateKeyBuffer
-			);
-
-			return dataReturn(returnValue, {
-				publicKey: dataResult(publicKeyBuffer, publicKeyBytes),
-				privateKey: dataResult(privateKeyBuffer, privateKeyBytes)
-			});
-		}
-		finally {
-			dataFree(publicKeyBuffer);
-			dataFree(privateKeyBuffer);
-		}
-	}); },
-
-	encrypt: function (message, publicKey) { return initiated.then(function () {
-		if (message.length > plaintextBytes) {
-			throw new Error('Plaintext length exceeds ntru.plaintextBytes.');
-		}
-
-		var messageBuffer	= Module._malloc(message.length);
-		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
-		var encryptedBuffer	= Module._malloc(cyphertextBytes);
-
-		Module.writeArrayToMemory(message, messageBuffer);
-		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
-
-		try {
-			var returnValue	= Module._ntrujs_encrypt(
-				messageBuffer,
-				message.length,
-				publicKeyBuffer,
-				encryptedBuffer
-			);
-
-			return dataReturn(
-				returnValue,
-				dataResult(encryptedBuffer, cyphertextBytes)
-			);
-		}
-		finally {
-			dataFree(messageBuffer);
-			dataFree(publicKeyBuffer);
-			dataFree(encryptedBuffer);
-		}
-	}); },
-
-	decrypt: function (encrypted, privateKey) { return initiated.then(function () {
-		var encryptedBuffer		= Module._malloc(cyphertextBytes);
-		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
-		var decryptedBuffer		= Module._malloc(plaintextBytes);
-
-		Module.writeArrayToMemory(encrypted, encryptedBuffer);
-		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
-
-		try {
-			var returnValue	= Module._ntrujs_decrypt(
-				encryptedBuffer,
-				privateKeyBuffer,
-				decryptedBuffer
-			);
-
-			if (returnValue >= 0) {
-				return dataResult(decryptedBuffer, returnValue);
+	var seedBuffer = null;
+	var that = this;
+	const init = function (seed) {
+		return Module.ready.then(function () {
+			if (seedBuffer) {
+				dataFree(seedBuffer);
 			}
-			else {
-				dataReturn(-returnValue);
+			if (seed) {
+				seedBuffer = Module._malloc(kSeedLength);
+				Module.writeArrayToMemory(seed, seedBuffer);
 			}
+			Module._ntrujs_init(seedBuffer);
+			that.publicKeyBytes = Module._ntrujs_public_key_bytes();
+			that.privateKeyBytes = Module._ntrujs_private_key_bytes();
+			that.cyphertextBytes = Module._ntrujs_encrypted_bytes();
+			that.plaintextBytes = Module._ntrujs_decrypted_bytes();
+		});
+	}
+
+	this.keyPair = function (seed) {
+		that.seed = seed;
+		return init(seed).then(function () {
+			var publicKeyBuffer = Module._malloc(that.publicKeyBytes);
+			var privateKeyBuffer = Module._malloc(that.privateKeyBytes);
+
+			try {
+				var returnValue = Module._ntrujs_keypair(
+					publicKeyBuffer,
+					privateKeyBuffer
+				);
+
+				return dataReturn(returnValue, {
+					publicKey: dataResult(publicKeyBuffer, that.publicKeyBytes),
+					privateKey: dataResult(privateKeyBuffer, that.privateKeyBytes)
+				});
+			}
+			finally {
+				dataFree(publicKeyBuffer);
+				dataFree(privateKeyBuffer);
+			}
+		});
+	}
+
+	this.encrypt = function (message, publicKey) {
+		return init(that.seed).then(function () {
+			if (message.length > that.plaintextBytes) {
+				throw new Error('Plaintext length exceeds ntru.plaintextBytes.');
+			}
+
+			var messageBuffer = Module._malloc(message.length);
+			var publicKeyBuffer = Module._malloc(that.publicKeyBytes);
+			var encryptedBuffer = Module._malloc(that.cyphertextBytes);
+
+			Module.writeArrayToMemory(message, messageBuffer);
+			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+
+			try {
+				var returnValue = Module._ntrujs_encrypt(
+					messageBuffer,
+					message.length,
+					publicKeyBuffer,
+					encryptedBuffer
+				);
+
+				return dataReturn(
+					returnValue,
+					dataResult(encryptedBuffer, that.cyphertextBytes)
+				);
+			}
+			finally {
+				dataFree(messageBuffer);
+				dataFree(publicKeyBuffer);
+				dataFree(encryptedBuffer);
+			}
+		});
+	}
+
+	this.decrypt = function (encrypted, privateKey) {
+		return init(that.seed).then(function () {
+			var encryptedBuffer = Module._malloc(that.cyphertextBytes);
+			var privateKeyBuffer = Module._malloc(that.privateKeyBytes);
+			var decryptedBuffer = Module._malloc(that.plaintextBytes);
+
+			Module.writeArrayToMemory(encrypted, encryptedBuffer);
+			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
+
+			try {
+				var returnValue = Module._ntrujs_decrypt(
+					encryptedBuffer,
+					privateKeyBuffer,
+					decryptedBuffer
+				);
+
+				if (returnValue >= 0) {
+					return dataResult(decryptedBuffer, returnValue);
+				}
+				else {
+					dataReturn(-returnValue);
+				}
+			}
+			finally {
+				dataFree(encryptedBuffer);
+				dataFree(privateKeyBuffer);
+				dataFree(decryptedBuffer);
+			}
+		});
+	}
+
+	this.dispose = function () {
+		if (seedBuffer) {
+			dataFree(seedBuffer);
+			Module._dispose();
 		}
-		finally {
-			dataFree(encryptedBuffer);
-			dataFree(privateKeyBuffer);
-			dataFree(decryptedBuffer);
-		}
-	}); }
-};
+	}
+}
 
-
-
-return ntru;
-
+return NTRU;
 }());
 
 
