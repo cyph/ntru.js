@@ -28,6 +28,7 @@ all:
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
+				'"'"'_dispose'"'"', \
 				'"'"'_ntrujs_init'"'"', \
 				'"'"'_ntrujs_keypair'"'"', \
 				'"'"'_ntrujs_encrypt'"'"', \

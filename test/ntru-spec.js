@@ -31,6 +31,8 @@ describe('ntru test', () => {
     const encrypted = await cipher.encrypt(plaintext, keyPair.publicKey)
     const decrypted = await cipher.decrypt(encrypted, keyPair.privateKey) // same as plaintext
 
+    cipher.dispose()
+
     assert.deepEqual(plaintext, decrypted)
   })
 })

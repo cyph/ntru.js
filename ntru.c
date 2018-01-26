@@ -19,6 +19,10 @@ uint32_t dbrg_randombytes (uint8_t *out, uint32_t num_bytes) {
 	DRBG_RET(DRBG_OK);
 }
 
+void dispose() {
+    user_seed = NULL;
+}
+
 void ntrujs_init (uint8_t *seed) {
     user_seed = seed;
 	randombytes_stir();

@@ -135,6 +135,13 @@ function NTRU(seed) {
       }
     });
   }
+
+  this.dispose = function () {
+    if (seedBuffer) {
+      dataFree(seedBuffer);
+      Module._dispose();
+    }
+  }
 }
 
 return NTRU;
