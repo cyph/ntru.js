@@ -6,7 +6,7 @@
 	"types": "./ntru.d.ts",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:veritas-shine/ntru.js.git"
+		"url": "git://github.com/cyph/ntru.js.git"
 	},
 	"scripts": {
 		"test": "NODE_PATH=./src mocha --require babel-core/register --require babel-polyfill --reporter spec test/*-spec.js"

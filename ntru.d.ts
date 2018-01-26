@@ -12,12 +12,6 @@ declare module 'ntru' {
 		/** Public key length. */
 		publicKeyBytes: number;
 
-		/** init seed (if have) */
-        init: Promise<void>;
-
-        /** new with seed */
-        new(seed: Uint8Array);
-
 		/** Decrypts cyphertext with privateKey. */
 		decrypt (encrypted: Uint8Array|string, privateKey: Uint8Array) : Promise<Uint8Array>;
 
@@ -25,7 +19,7 @@ declare module 'ntru' {
 		encrypt (message: Uint8Array|string, publicKey: Uint8Array) : Promise<Uint8Array>;
 
 		/** Generates key pair. */
-		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
+		keyPair (seed?: Uint8Array) : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
 
 		/** Free data */
 		dispose () : void;

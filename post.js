@@ -28,28 +28,33 @@ function dataFree(buffer) {
 
 var kSeedLength = 64;
 
-function NTRU(seed) {
+function NTRU() {
   if (!this instanceof NTRU) {
-    return new NTRU(seed);
+    return new NTRU();
   }
 
-  this.seed = seed;
-  var seedBuffer;
-  if (seed) {
-    seedBuffer = Module._malloc(kSeedLength);
-    Module.writeArrayToMemory(seed, seedBuffer);
-  }
+  var seedBuffer = null;
   var that = this;
-  this.init = Module.ready.then(function () {
-    Module._ntrujs_init(seedBuffer);
-    that.publicKeyBytes = Module._ntrujs_public_key_bytes();
-    that.privateKeyBytes = Module._ntrujs_private_key_bytes();
-    that.cyphertextBytes = Module._ntrujs_encrypted_bytes();
-    that.plaintextBytes = Module._ntrujs_decrypted_bytes();
-  });
+  const init = function(seed) {
+    return Module.ready.then(function () {
+      if (seedBuffer) {
+        dataFree(seedBuffer);
+      }
+      if (seed) {
+        seedBuffer = Module._malloc(kSeedLength);
+        Module.writeArrayToMemory(seed, seedBuffer);
+      }
+      Module._ntrujs_init(seedBuffer);
+      that.publicKeyBytes = Module._ntrujs_public_key_bytes();
+      that.privateKeyBytes = Module._ntrujs_private_key_bytes();
+      that.cyphertextBytes = Module._ntrujs_encrypted_bytes();
+      that.plaintextBytes = Module._ntrujs_decrypted_bytes();
+    });
+  }
 
-  this.keyPair = function () {
-    return this.init.then(function () {
+  this.keyPair = function (seed) {
+    that.seed = seed;
+    return init(seed).then(function () {
       var publicKeyBuffer = Module._malloc(that.publicKeyBytes);
       var privateKeyBuffer = Module._malloc(that.privateKeyBytes);
 
@@ -72,7 +77,7 @@ function NTRU(seed) {
   }
 
   this.encrypt = function (message, publicKey) {
-    return this.init.then(function () {
+    return init(that.seed).then(function () {
       if (message.length > that.plaintextBytes) {
         throw new Error('Plaintext length exceeds ntru.plaintextBytes.');
       }
@@ -106,7 +111,7 @@ function NTRU(seed) {
   }
 
   this.decrypt = function (encrypted, privateKey) {
-    return this.init.then(function () {
+    return init(that.seed).then(function () {
       var encryptedBuffer = Module._malloc(that.cyphertextBytes);
       var privateKeyBuffer = Module._malloc(that.privateKeyBytes);
       var decryptedBuffer = Module._malloc(that.plaintextBytes);
