@@ -50,7 +50,15 @@ all:
 		Module.ready = new Promise(function (resolve, reject) { \
 			var Module = _Module; \
 			Module.onAbort = reject; \
-			Module.onRuntimeInitialized = resolve; \
+			Module.onRuntimeInitialized = function () { \
+				try { \
+					Module._ntrujs_public_key_bytes(); \
+					resolve(); \
+				} \
+				catch (err) { \
+					reject(err); \
+				} \
+			}; \
 	" >> dist/ntru.tmp.js
 	cat dist/ntru.wasm.js >> dist/ntru.tmp.js
 	echo " \
