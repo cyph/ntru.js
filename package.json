@@ -1,6 +1,6 @@
 {
 	"name": "ntru",
-	"version": "3.1.6",
+	"version": "3.1.7",
 	"description": "JavaScript wrapper for a WebAssembly build of NTRU",
 	"main": "dist/ntru.js",
 	"types": "./ntru.d.ts",
