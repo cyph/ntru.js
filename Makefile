@@ -73,7 +73,7 @@ all:
 	" >> dist/ntru.tmp.js
 	cat post.js >> dist/ntru.tmp.js
 
-	uglifyjs dist/ntru.tmp.js -cmo dist/ntru.js
+	terser dist/ntru.tmp.js -cmo dist/ntru.js
 
 	sed -i 's|use asm||g' dist/ntru.js
 	sed -i 's|require(|eval("require")(|g' dist/ntru.js
