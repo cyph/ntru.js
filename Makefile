@@ -9,6 +9,7 @@ all:
 
 	bash -c ' \
 		args="$$(echo " \
+			--memory-init-file 0 \
 			-s SINGLE_FILE=1 \
 			-DPARAMS=NTRU_EES743EP1 \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
