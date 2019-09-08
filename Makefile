@@ -47,14 +47,13 @@ all:
 	cp pre.js dist/ntru.tmp.js
 	echo " \
 		var Module = {}; \
-		var _Module = Module; \
 		Module.ready = new Promise(function (resolve, reject) { \
-			var Module = _Module; \
+			var Module = {}; \
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
 					Module._ntrujs_public_key_bytes(); \
-					resolve(); \
+					resolve(Module); \
 				} \
 				catch (err) { \
 					reject(err); \
@@ -64,12 +63,13 @@ all:
 	cat dist/ntru.wasm.js >> dist/ntru.tmp.js
 	echo " \
 		}).catch(function () { \
-			var Module = _Module; \
-			Module.onAbort = undefined; \
-			Module.onRuntimeInitialized = undefined; \
+			var Module = {}; \
 	" >> dist/ntru.tmp.js
 	cat dist/ntru.asm.js >> dist/ntru.tmp.js
 	echo " \
+			return Module; \
+		}).then(function (m) { \
+			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
 	" >> dist/ntru.tmp.js
 	cat post.js >> dist/ntru.tmp.js
