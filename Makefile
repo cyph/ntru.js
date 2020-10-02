@@ -40,7 +40,7 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/ntru.asm.js"; \
+		bash -c "emcc -Oz -s WASM=0 $$args -o dist/ntru.asm.js"; \
 		bash -c "emcc -O3 -s WASM=1 $$args -o dist/ntru.wasm.js"; \
 	'
 
